@@ -1,0 +1,39 @@
+data Tree = Empty | Node Tree Int Tree
+
+printIndent 1 = putChar ' '
+printIndent n = do 
+  putChar ' '
+  printIndent (n-1)
+
+printTree Empty n = do
+  printIndent n
+  putStr ".\n"
+printTree (Node l v r) n = do
+  printIndent n
+  print v
+  printTree l (n+3)
+  printTree r (n+3)
+
+prettyPrintTree tree = printTree tree 1
+
+upTo _ [] = []
+upTo e (x:xs)
+  | e == x = []
+  | otherwise = x:(upTo e xs)
+
+startFrom _ [] = []
+startFrom e (x:xs)
+  | e == x = xs
+  | otherwise = startFrom e xs
+
+list2tree [] [] = Empty
+list2tree [e] [_] = Node Empty e Empty
+list2tree (p:ps) is = if ll /= [] && lr /= [] then Node (list2tree ((upTo (last ll) ps) ++ [(last ll)]) ll) p (list2tree (startFrom (last ll) ps) lr)
+else if lr /= []
+then Node Empty p (list2tree ps lr)
+else Node (list2tree ps ll) p Empty
+  where
+  ll = upTo p is
+  lr = startFrom p is
+  
+-- call prettyPrintTree (list2tree [preorder list from lab] [inorder list from lab])

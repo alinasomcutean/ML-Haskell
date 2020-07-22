@@ -1,0 +1,33 @@
+import Data.Char
+
+countries = ["Russia", "Norway", "Germany", "Romania", "France", "South Korea", "Angola", "Hungary", "Antigua and Barbuda"]
+
+-- optional
+c2i c | c == ’ä’ = ord ’a’
+| c == ’ă’ = ord ’a’
+| c == ’â’ = ord ’a’
+| c == ’å’ = ord ’a’
+| otherwise = ord c
+
+-- replace ord with c2i when special characters are used in the strings
+strlt "" "" = True
+strlt "" _ = True
+strlt _ "" = False
+strlt (x:xs) (y:ys) | (ord x) < (ord y) = True
+  | (ord x) > (ord y) = False
+  | otherwise = strlt xs ys
+
+-- quicksort
+qs [] _ = []
+qs (x:xs) ordrel = (qs smalls ordrel) ++ [x] ++ (qs bigs ordrel)
+  where
+    smalls = [s | s<-xs, ordrel s x]
+    bigs = [b | b<-xs, not (ordrel b x)]
+	
+-- call: qs countries strlt or qs countries (<=)
+
+-- leap years
+leapYears = filter (\ n -> isLeapYear n) [1789..2018]
+isLeapYear n = (n ‘mod‘ 4 == 0) && (n ‘mod‘ 100 /= 0) ||
+(n ‘mod‘ 400 == 0)
+
